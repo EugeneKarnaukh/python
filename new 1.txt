@@ -1,0 +1,34 @@
+import pandas as pd
+pd.set_option("display.max_columns", None)
+data=pd.read_csv(f"product.template.csv")
+df = pd.DataFrame(data)
+dfNegative = df[(df['Forecasted Quantity'] < 0)]
+dfAggreg = dfNegative.groupby(["Product Category/Complete Name"]).agg({'Forecasted Quantity': 'sum'}).reset_index()
+dfGroups = dfAggreg.groupby(["Product Category/Complete Name"]).apply(lambda x: x.sort_values(["Forecasted Quantity"], ascending = False)).reset_index(drop=True)
+dfGroups1=dfGroups.nsmallest(3, 'Forecasted Quantity')
+
+print(dfGroups1)
+
+
+output:
+
+   Product Category/Complete Name  Forecasted Quantity
+5       Houseware - Non inventory                -1328
+13                          Linen                 -341
+14                   Placeholders                 -178
+
+
+** Process exited - Return Code: 0 **
+Press Enter to exit terminal
+
+
+option2
+
+#pd.set_option("display.max_columns", None)
+data=pd.read_csv(f"product.template.csv")
+df = pd.DataFrame(data)
+dfNegative = df[(df['Forecasted Quantity'] < 0)]
+dfAggreg = dfNegative.groupby(["Product Category/Complete Name"]).agg({'Forecasted Quantity': 'sum'}).reset_index()
+dfGroups1=dfAggreg.nsmallest(3, 'Forecasted Quantity')
+
+print(dfGroups1)
